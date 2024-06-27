@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  sftp:
+    build:
+      dockerfile: ./Dockerfile
+      context: '.'
+    hostname: sftp
+    container_name: sftp-test-container
+    ports:
+      - '21213:22'
+    command: in:wso2123:::upload
+    volumes:
+      - ./host/upload:/home/in/upload
