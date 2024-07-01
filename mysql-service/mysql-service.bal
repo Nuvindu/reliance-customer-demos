@@ -1,31 +1,28 @@
-import ballerina/http;
 import ballerina/sql;
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
+import ballerina/io;
 
-// The `Album` record to load records from `albums` table.
-type Album record {|
-    string id;
+type Book record {|
+    string book_id;
     string title;
-    string artist;
-    float price;
+    string author;
+    string price;
+    int quantity;
 |};
 
-service / on new http:Listener(8080) {
-    private final mysql:Client db;
+public function main() returns error? {
+    // Initializing the MySQL client.
+    mysql:Client db = check new ("localhost", "root", "password", "BOOK_STORE", 3306);
 
-    function init() returns error? {
-        // Initiate the mysql client at the start of the service. This will be used
-        // throughout the lifetime of the service.
-        self.db = check new ("localhost", "root", "", "MUSIC_STORE", 3306);
+    // Inserting a record into the `books` table.
+    sql:ExecutionResult execute = check db->execute(`INSERT INTO books (title, author, price, quantity) VALUES ('Sapiens', 'Yual Noah Harari', 8.99, 75)`);
+    
+    if execute.affectedRowCount < 1 {
+        return error("Error occurred while inserting the record");
     }
 
-    resource function get albums() returns Album[]|error {
-        // Execute simple query to retrieve all records from the `albums` table.
-        stream<Album, sql:Error?> albumStream = self.db->query(`SELECT * FROM albums`);
-
-        // Process the stream and convert results to Album[] or return error.
-        return from Album album in albumStream
-            select album;
-    }
+    // Retrieving the inserted record from the `books` table.
+    Book book = check db->queryRow(`SELECT * FROM books WHERE title = 'Sapiens'`);
+    io:println("Book: ", book);
 }

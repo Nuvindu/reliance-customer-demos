@@ -1,31 +1,59 @@
-CREATE USER 'local_user'@'localhost' IDENTIFIED BY 'password';
+-- Create a new user and grant privileges
+CREATE USER 'local_user'@'%' IDENTIFIED BY 'password';
 
-GRANT ALL PRIVILEGES ON MUSIC_STORE.* TO 'local_user';
+GRANT ALL PRIVILEGES ON MUSIC_STORE.* TO 'local_user'@'%';
 
 FLUSH PRIVILEGES;
 
--- CREATE DATABASE MUSIC_STORE;
+-- Creates a database.
+CREATE DATABASE IF NOT EXISTS BOOK_STORE;
 
-CREATE TABLE MUSIC_STORE.albums (id VARCHAR(100) NOT NULL PRIMARY KEY, title VARCHAR(100), artist VARCHAR(100), price REAL );
+USE BOOK_STORE;
 
-INSERT INTO MUSIC_STORE.albums VALUES("A-123", "Lemonade", "Beyonce", 18.98);
+-- Creates `books` table in the database.
+CREATE TABLE BOOK_STORE.books (
+    book_id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0)
+);
 
-INSERT INTO MUSIC_STORE.albums VALUES("A-321", "Renaissance", "Beyonce", 24.98);
+-- Creates `orders` table in the database.
+CREATE TABLE BOOK_STORE.orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    book_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    total_price DECIMAL(10, 2) NOT NULL,
+    order_date DATETIME NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
+);
 
-CREATE TABLE MUSIC_STORE.artists (artist_id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, first_name VARCHAR(300), last_name VARCHAR(300) );
+-- Creates `sales` table in the database.
+CREATE TABLE BOOK_STORE.sales (
+    sale_id INT PRIMARY KEY AUTO_INCREMENT,
+    book_id INT NOT NULL,
+    sale_date DATETIME NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    total_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books(book_id)
+);
 
-INSERT INTO MUSIC_STORE.artists VALUES (1, "Beyonce", "Knowles");
+-- Adds records to the `books` table.
+INSERT INTO BOOK_STORE.books (title, author, price, quantity) VALUES
+('Crime And Punishment', 'Fyodor Dostoevsky', 10.99, 50),
+('A Game of Thrones', 'George R.R. Martin', 7.99, 30),
+('1984', 'George Orwell', 8.99, 40);
 
-INSERT INTO MUSIC_STORE.artists VALUES (2, "Rihanna", "Fenty");
+-- Adds records to the `orders` table.
+INSERT INTO BOOK_STORE.orders (book_id, customer_id, quantity, total_price, order_date) VALUES
+(1, 101, 2, 21.98, '2024-06-27 10:30:00'),
+(2, 102, 1, 7.99, '2024-06-27 11:00:00'),
+(3, 103, 3, 26.97, '2024-06-27 11:30:00');
 
-CREATE TABLE MUSIC_STORE.inventory (id varchar(100) NOT NULL PRIMARY KEY, title varchar(100) DEFAULT NULL, artist varchar(100) DEFAULT NULL, price double DEFAULT NULL, quantity int NOT NULL, CHECK (quantity > 0) );
-
-INSERT INTO MUSIC_STORE.inventory VALUES ("A-123", "Lemonade", "Beyonce", 18.98, 10);
-
-INSERT INTO MUSIC_STORE.inventory VALUES ("A-321", "Renaissance", "Beyonce", 24.98, 100);
-
-CREATE TABLE MUSIC_STORE.sales_order (id varchar(100) NOT NULL PRIMARY KEY, order_date DATE NOT NULL, product_id varchar(100) NOT NULL, quantity int );
-                                                                                                                                      
-INSERT INTO MUSIC_STORE.sales_order VALUES ("S-123", "2022-12-09", "A-123", 2);
-INSERT INTO MUSIC_STORE.sales_order VALUES ("S-321", "2022-12-09", "A-321", 1);
-INSERT INTO MUSIC_STORE.sales_order VALUES ("S-456", "2022-12-10", "A-321", 3);
+-- Adds records to the `sales` table.
+INSERT INTO BOOK_STORE.sales (book_id, sale_date, quantity, total_amount) VALUES
+(1, '2024-06-27 10:30:00', 2, 21.98),
+(2, '2024-06-27 11:00:00', 1, 7.99),
+(3, '2024-06-27 11:30:00', 3, 26.97);
