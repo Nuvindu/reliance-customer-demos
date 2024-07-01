@@ -1,12 +1,58 @@
-# [Ballerina] Order Management System
+# Book Store - OracleDB Service
 
 ## Prerequisites
 
 - Ballerina Swan Lake Update 8+
 
+## Use Case 1: Basic Database Access
+
+This implementation accesses a MySQL database with credentials inserts a new record into a table and then retrieves it.
+
+![Database Access](./resources/db_access.png)
+
 ## Deploying the system
 
-### 1. Start a Kafka broker instance
+### 1. Setup a Oracle Database
+
+Run the `docker compose` to set up the required dependencies.
+
+```bash
+    colima start --memory 4 --arch x86_64
+```
+
+```sh
+    docker compose up
+```
+
+### 2. Run the OracleDB service
+
+Execute the following command in the project directory.
+
+```ballerina
+bal run mysql-service.bal
+```
+
+## Use Case 2: Database with Atomic Transactions
+
+This implementation accesses a MySQL database with credentials and provides an atomic transaction for completing an order. Here, first, it checks whether the amount of books are available in the inventory for the order to be completed.
+
+![Database with Atomic Transactions](./resources/transaction.png)
+
+**Check Book Availability:** Check if the book is in stock by selecting the quantity from the books table. If the book is not available (quantity < 1), the transaction is rolled back, and an error message is printed.
+
+**Update Book Inventory:** If the book is available, the quantity is reduced by one.
+
+**Create Order Record:** A new record is inserted into the orders table with the purchase details.
+
+**Update Sales Table:** A new record is inserted into the sales table to track the sale details.
+
+**Rollback:** If any of the steps returns an error, the whole transaction will be rolled back to the initial state.
+
+**Commit Transaction:** If all steps succeed, the transaction is committed, finalizing the changes.
+
+## Deploying the system
+
+### 1. Setup a Oracle Database
 
 Run the `docker compose` to set up the required dependencies.
 
@@ -14,10 +60,18 @@ Run the `docker compose` to set up the required dependencies.
     docker compose up
 ```
 
-### 2. Run the OracleDB Client
+### 2. Run the OracleDB service
 
 Execute the following command in the project directory.
 
 ```ballerina
-bal run oracledb-service.bal
+bal run transaction.bal
+```
+
+### 3. Run the OracleDB service with a failing transaction
+
+Execute the following command in the project directory.
+
+```ballerina
+bal run failing_transaction.bal
 ```
