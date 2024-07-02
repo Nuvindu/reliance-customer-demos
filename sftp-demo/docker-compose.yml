@@ -8,5 +8,3 @@ services:
     ports:
       - '21213:22'
     command: in:wso2123:::upload
-    volumes:
-      - ./host/upload:/home/in/upload

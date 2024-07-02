@@ -1,9 +1,5 @@
--- init.sql
--- CREATE USER my_user IDENTIFIED BY my_password;
--- GRANT CONNECT, RESOURCE TO my_user;
 CONNECT oracle/dummypassword@localhost:1521/XEPDB1
 
--- Switch to the BOOK_STORE schema
 ALTER SESSION SET CURRENT_SCHEMA = BOOK_STORE;
 
 -- Creates `books` table in the schema.

@@ -5,7 +5,7 @@ configurable string host = ?;
 configurable int port = ?;
 configurable string username = ?;
 configurable string password = ?;
-
+configurable string fileNamePattern = ?;
 
 listener ftp:Listener fileListener = check new ({
     protocol: ftp:FTP,
@@ -17,7 +17,7 @@ listener ftp:Listener fileListener = check new ({
             password
         }
     },
-    fileNamePattern: "(.*).(.*)"
+    fileNamePattern
 });
 
 service on fileListener {

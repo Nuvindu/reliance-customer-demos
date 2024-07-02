@@ -5,6 +5,7 @@ configurable string host = ?;
 configurable int port = ?;
 configurable string username = ?;
 configurable string password = ?;
+configurable string fileName = ?;
 
 public function main() returns error? {
     ftp:Client fileClient = check new ({
@@ -19,6 +20,6 @@ public function main() returns error? {
     });
 
     stream<io:Block, io:Error?> fileStream = check io:fileReadBlocksAsStream("./local/logFile.txt", 1024);
-    check fileClient->put("/uploadFile.txt", fileStream);
+    check fileClient->put(fileName, fileStream);
     check fileStream.close();
 }

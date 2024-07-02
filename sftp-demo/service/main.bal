@@ -1,20 +1,28 @@
 import ballerina/ftp;
 import ballerina/io;
 
+configurable string host = ?;
+configurable int port = ?;
+configurable string username = ?;
+configurable string password = ?;
+configurable string fileName = ?;
+configurable string fileNamePattern = ?;
+configurable string privateKeyPath = ?;
+
 listener ftp:Listener fileListener = check new ({
-        protocol: ftp:SFTP,
-        host: "localhost",
-        port: 21213,
-        auth: {
-            credentials: {
-                username: "in",
-                password: "wso2123"
-            },
-            privateKey: {
-                path: "../resources/keys/pkcs8-key"
-            }
+    protocol: ftp:SFTP,
+    host,
+    port,
+    auth: {
+        credentials: {
+            username,
+            password
         },
-        fileNamePattern: "(.*).(.*)"
+        privateKey: {
+            path: privateKeyPath
+        }
+    },
+    fileNamePattern
 });
 
 service on fileListener {

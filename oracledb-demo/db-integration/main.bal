@@ -3,6 +3,12 @@ import ballerinax/oracledb;
 import ballerinax/oracledb.driver as _;
 import ballerina/io;
 
+configurable string host = ?;
+configurable string user = ?;
+configurable string password = ?;
+configurable string databaseName = ?;
+configurable int port = ?;
+
 type Book record {|
     string book_id;
     string title;
@@ -12,13 +18,23 @@ type Book record {|
 |};
 
 public function main() returns error? {
-    oracledb:Client db = check new ("localhost", "oracle", "dummypassword", "XEPDB1", 1521);
-    sql:ParameterizedQuery query3 = `SELECT * FROM books`;
-    stream<Book, sql:Error?> bookStream = db->query(query3);
-
-    // Iterating the returned table.
-    check from Book book in bookStream
-    do {
-        io:println("Book: ", book);
+    oracledb:Client database = check new (host, user, password, databaseName, port);
+    Book book = {
+        book_id: "",
+        title: "Sapiens",
+        author: "Yual Noah Harari",
+        price: "8.99",
+        quantity: 75
     };
+
+    sql:ParameterizedQuery query = 
+        `INSERT INTO books (book_id, title, author, price, quantity) VALUES 
+            (BOOK_SEQ.NEXTVAL, ${book.title}, ${book.author}, ${book.price}, ${book.quantity})`;
+    sql:ExecutionResult execute = check database->execute(query);
+    if execute.affectedRowCount < 1 {
+        return error("Error occurred while inserting the record");
+    }
+
+    Book result = check database->queryRow(`SELECT * FROM books WHERE title = ${book.title}`);
+    io:println("Book: ", result);
 }
