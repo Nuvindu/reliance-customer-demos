@@ -62,13 +62,17 @@ Run the `docker compose` to set up the required dependencies.
 Execute the following command in the project directory.
 
 ```ballerina
-bal run transaction.bal
+cd db-transaction
+bal run
 ```
 
-### 3. Run the Ballerina project with a failing transaction
+## Use Case 3: Database with Transaction Rollbacks
+
+This sample is to demonstrate how the database transactions are rolled back whenever an error is encountered during the process.
 
 Execute the following command in the project directory.
 
 ```ballerina
-bal run failing_transaction.bal
+cd db-transaction-rollback
+bal run
 ```
