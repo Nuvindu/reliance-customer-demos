@@ -1,14 +1,20 @@
 import ballerina/ftp;
 import ballerina/io;
 
+configurable string host = ?;
+configurable int port = ?;
+configurable string username = ?;
+configurable string password = ?;
+
+
 listener ftp:Listener fileListener = check new ({
     protocol: ftp:FTP,
-    host: "localhost",
-    port: 21,
+    host,
+    port,
     auth: {
         credentials: {
-            username: "user1",
-            password: "pass456"
+            username,
+            password
         }
     },
     fileNamePattern: "(.*).(.*)"

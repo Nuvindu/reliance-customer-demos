@@ -1,13 +1,19 @@
 import ballerina/ftp;
 import ballerina/io;
 
+configurable string host = ?;
+configurable int port = ?;
+configurable string username = ?;
+configurable string password = ?;
+
 public function main() returns error? {
     ftp:Client fileClient = check new ({
-        host: "localhost",
+        host,
+        port,
         auth: {
             credentials: {
-                username: "user1",
-                password: "pass456"
+                username,
+                password
             }
         }
     });
