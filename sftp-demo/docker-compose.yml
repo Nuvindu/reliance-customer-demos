@@ -2,9 +2,7 @@ version: '2'
 
 services:
   sftp:
-    build:
-      dockerfile: ./Dockerfile
-      context: '.'
+    image: atmoz/sftp:latest
     hostname: sftp
     container_name: sftp-test-container
     ports:

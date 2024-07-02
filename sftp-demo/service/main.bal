@@ -11,7 +11,7 @@ listener ftp:Listener fileListener = check new ({
                 password: "wso2123"
             },
             privateKey: {
-                path: "./resources/keys/pkcs8-key"
+                path: "../resources/keys/pkcs8-key"
             }
         },
         fileNamePattern: "(.*).(.*)"

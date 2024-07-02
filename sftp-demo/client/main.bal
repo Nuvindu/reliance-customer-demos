@@ -12,12 +12,12 @@ public function main() returns error? {
                 password: "wso2123"
             },
             privateKey: {
-                path: "./resources/keys/pkcs8-key"
+                path: "../resources/keys/pkcs8-key"
             }
         }
     });
 
-    stream<io:Block, io:Error?> fileStream = check io:fileReadBlocksAsStream("./local/logFile.txt", 1024);
+    stream<io:Block, io:Error?> fileStream = check io:fileReadBlocksAsStream("./local/log_file.txt", 1024);
     check fileClient->put("/upload/uploadFile.txt", fileStream);
     check fileStream.close();
 }
