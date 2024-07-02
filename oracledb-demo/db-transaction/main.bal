@@ -30,7 +30,6 @@ public function main() returns error? {
 
             _ = check db->execute(`INSERT INTO sales (sale_id, book_id, sale_date, quantity, total_amount) 
                                    VALUES (SALE_SEQ.NEXTVAL, 1, SYSTIMESTAMP, 1, (SELECT price FROM books WHERE book_id = 1))`);
-
             check commit;
             io:println("Transaction is successful");
         }
