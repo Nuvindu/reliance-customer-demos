@@ -20,12 +20,12 @@ Run the `docker compose` to set up the required dependencies.
     docker compose up
 ```
 
-### 2. Run the MySQL service
+### 2. Run the Ballerina project
 
 Execute the following command in the project directory.
 
 ```ballerina
-bal run mysql-service.bal
+bal run mysql-client.bal
 ```
 
 ## Use Case 2: Database with Atomic Transactions
@@ -56,7 +56,7 @@ Run the `docker compose` to set up the required dependencies.
     docker compose up
 ```
 
-### 2. Run the MySQL service
+### 2. Run the Ballerina project with transactions
 
 Execute the following command in the project directory.
 
@@ -64,7 +64,7 @@ Execute the following command in the project directory.
 bal run transaction.bal
 ```
 
-### 3. Run the MySQL service with a failing transaction
+### 3. Run the Ballerina project with a failing transaction
 
 Execute the following command in the project directory.
 

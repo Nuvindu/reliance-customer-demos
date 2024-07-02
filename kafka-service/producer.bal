@@ -17,7 +17,7 @@ service / on new http:Listener(9090) {
 
     resource function post orders(Order newOrder) returns http:Accepted|error {
         check self.orderProducer->send({
-            topic: "order-topic",
+            topic: "orders",
             value: newOrder
         });
         return http:ACCEPTED;

@@ -10,12 +10,11 @@ type Order readonly & record {
 
 public function main() returns error? {
     kafka:Consumer orderConsumer = check new (kafka:DEFAULT_URL, {
-        groupId: "order-group-id",
-        topics: "order-topic"
+        groupId: "group-id",
+        topics: "orders"
     });
 
     while true {
-        // Polls the consumer for payload.
         Order[] orders = check orderConsumer->pollPayload(15);
         from Order 'order in orders
             where 'order.isValid

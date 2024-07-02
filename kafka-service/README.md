@@ -32,7 +32,7 @@ bal run consumer.bal
 
 ### 4. Produce data to a Kafka topic
 
-Use the following cURL command to produce data to a Kafka topic.
+Use the following cURL command to produce data for a Kafka topic.
 
 ```curl
 curl http://localhost:9090/orders -H "Content-type:application/json" -d "{\"orderId\": 1, \"productName\": \"Sport shoe\", \"price\": 27.5, \"isValid\": true}"

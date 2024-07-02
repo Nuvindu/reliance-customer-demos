@@ -1,4 +1,8 @@
-# [Ballerina] Music Store
+# [Ballerina] FTP Client and Service
+
+This sample demonstrates how to initialize an FTP client and upload files to the FTP server while retrieving those files from an FTP service.
+
+![Overview: FTP Client & Service](./resources/ftp-diagram.png)
 
 ## Prerequisites
 
