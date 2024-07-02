@@ -1,12 +1,12 @@
 import ballerinax/kafka;
 import ballerina/io;
 
-type Order readonly & record {
+type Order readonly & record {|
     int orderId;
     string productName;
     decimal price;
     boolean isValid;
-};
+|};
 
 public function main() returns error? {
     kafka:Consumer orderConsumer = check new (kafka:DEFAULT_URL, {

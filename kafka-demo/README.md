@@ -8,7 +8,7 @@
 
 ### 1. Start a Kafka broker instance
 
-Run the `docker compose` to set up the required dependencies.
+Run the following docker command to start a Kafka broker.
 
 ```sh
     docker compose up
@@ -35,5 +35,5 @@ bal run consumer.bal
 Use the following cURL command to produce data for a Kafka topic.
 
 ```curl
-curl http://localhost:9090/orders -H "Content-type:application/json" -d "{\"orderId\": 1, \"productName\": \"Sport shoe\", \"price\": 27.5, \"isValid\": true}"
+curl http://localhost:9090/orders -H "Content-type:application/json" -d "{\"orderId\": 1, \"productName\": \"New Order\", \"price\": 27.5, \"isValid\": true}"
 ```
